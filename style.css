@@ -1,137 +1,110 @@
-* {
-    box-sizing: border-box;
-}
-
+* { box-sizing: border-box; }
 body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0c0c0c;
-    color: #e0e0e0;
-    font-family: 'Courier New', Courier, monospace;
-    overflow: hidden; /* Stops browser scrolling bars */
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background-color: #1e120b; color: #fdf6e2;
+    font-family: 'Courier New', Courier, monospace; overflow: hidden;
 }
 
-/* Fullscreen Grid Split */
-#game-viewport {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    border: 5px solid;
-}
+#game-viewport { display: flex; width: 100vw; height: 100vh; border: 8px solid #3a2211; }
 
-/* Dynamic Borders per Area */
-.area-shady { border-color: #4CAF50; }
-.area-shady .accent { color: #00BCD4; }
-.area-crimson { border-color: #F44336; }
-.area-crimson .accent { color: #FFEB3B; }
-.area-glacial { border-color: #2196F3; }
-.area-glacial .accent { color: #FFFFFF; }
+/* Biome Borders */
+.area-shady { border-color: #486e24; }
+.area-crimson { border-color: #9c2e17; }
+.area-glacial { border-color: #4b809e; }
 
-/* The Game Screen Area */
+/* Stardew Style Map Board Grid layout */
 #world-map {
-    flex: 1; /* Occupies all available left room */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #050505;
-    padding: 20px;
+    flex: 1; display: flex; justify-content: center; align-items: center;
+    background-color: #141f0c; padding: 10px; position: relative;
 }
+#map-relative-wrapper { position: relative; display: inline-block; }
 
 #map-grid-display {
-    font-size: 2.5rem; /* Huge map graphics */
-    line-height: 3.2rem;
-    letter-spacing: 12px;
-    white-space: nowrap;
+    display: grid;
+    grid-template-columns: repeat(10, 60px); /* 60px square tiles */
+    grid-template-rows: repeat(7, 60px);
+    gap: 2px;
+    background: #25160c; border: 4px solid #4a2e1b; padding: 4px;
 }
 
-/* Sidebar Styling */
-#sidebar {
-    width: 320px;
-    background-color: #111;
-    border-left: 3px dashed #333;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-}
-
-#game-header h2 { margin: 0; text-align: center; font-size: 1.2rem; }
-#game-header h3 { margin: 5px 0 15px 0; text-align: center; letter-spacing: 1px; color: #aaa; }
-
-#stats-panel {
-    background: #161616;
-    padding: 12px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-}
-.stat-row { margin: 6px 0; font-size: 0.9rem; }
-.yellow { color: #FFD700; font-weight: bold; }
-
-#action-prompt {
-    padding: 10px;
-    text-align: center;
-    background: #222;
-    font-weight: bold;
-    font-size: 0.85rem;
-    min-height: 38px;
-    margin-bottom: 15px;
-}
-
-/* The Live Scrolling Activity Log */
-#activity-log {
-    flex: 1;
-    background: #080808;
-    border: 1px solid #222;
-    padding: 10px;
-    overflow-y: auto;
-    font-size: 0.8rem;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    border-radius: 4px;
-}
-.log-entry { animation: fadeIn 0.2s ease-out; }
-.log-entry.system { color: #888; }
-.log-entry.dig { color: #FFEB3B; }
-.log-entry.find { color: #4CAF50; font-weight: bold; }
-.log-entry.fail { color: #777; }
-.log-entry.error { color: #F44336; }
-
-#inventory-display {
-    margin-top: 15px;
-    font-size: 0.8rem;
-    color: #888;
-    max-height: 80px;
-    overflow-y: auto;
-}
-
-/* Overlay Window Control */
-.hidden { display: none !important; }
-#shop-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85);
+/* Landscape Tile Blocks Styling */
+.tile {
     display: flex; justify-content: center; align-items: center;
-    z-index: 10;
+    font-size: 1.8rem; border-radius: 4px; cursor: pointer; transition: filter 0.1s;
 }
-#shop-modal {
-    background: #111;
-    border: 3px solid #9C27B0;
-    padding: 30px;
-    width: 400px;
-    text-align: center;
+.tile:hover { filter: brightness(1.2); }
+.tile-empty { background-color: #5c8033; border: 1px solid #4d6e27; } /* Lush Grass */
+.tile-dig { background-color: #a06e3b; border: 1px solid #7c5328; } /* Tillable Dirt */
+.tile-water { background-color: #2b61a3; border: 1px solid #1f497d; animation: riverWobble 2s infinite alternate; } /* Water */
+.tile-shop { background-color: #8c5333; border: 2px solid #5a321a; font-weight: bold; } /* Wood Cabin Shop */
+
+/* Customizable Avatar Block Layout */
+.player-avatar {
+    position: relative; width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    border-radius: 4px; font-size: 1.5rem;
 }
-.shop-buttons button, #travel-menu button {
-    display: block; width: 100%; background: #222; color: #fff;
-    border: 1px solid #444; padding: 12px; margin: 10px 0;
-    cursor: pointer; font-family: inherit; font-weight: bold;
+.player-body {
+    width: 24px; height: 24px; border-radius: 50% 50% 0 0;
+    display: flex; justify-content: center; align-items: center; font-size: 0.9rem;
 }
-.shop-buttons button:hover, #travel-menu button:hover {
-    background: #2b2b2b; border-color: #9C27B0;
+.player-hat { position: absolute; top: -14px; font-size: 1.3rem; z-index: 2; }
+
+/* Sidebar Panels Design */
+#sidebar { width: 340px; background-color: #311e11; border-left: 5px solid #22140a; display: flex; flex-direction: column; padding: 15px; }
+#game-header h2 { margin: 0; font-size: 1.3rem; text-align: center; color: #fbc02d; text-shadow: 1px 1px #000; }
+#game-header h3 { margin: 4px 0 12px 0; text-align: center; font-size: 0.9rem; color: #bcaaa4; }
+
+#customizer-panel, #stats-panel { background: #22140a; padding: 10px; border-radius: 6px; border: 2px solid #4a2e1b; margin-bottom: 12px; }
+#customizer-panel h4 { margin: 0 0 8px 0; font-size: 0.85rem; color: #fbc02d; }
+.custom-row { display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.8rem; align-items: center; }
+.custom-row input, .custom-row select { background: #333; color: #fff; border: 1px solid #555; padding: 2px; font-family: inherit; }
+
+#action-prompt { padding: 10px; text-align: center; background: #c67a43; color: #1e120b; font-weight: bold; font-size: 0.8rem; border-radius: 4px; margin-bottom: 12px; }
+#activity-log { flex: 1; background: #1a0f07; border: 2px solid #2c1a0e; padding: 8px; overflow-y: auto; font-size: 0.75rem; display: flex; flex-direction: column; gap: 4px; }
+.log-entry.find { color: #81c784; font-weight: bold; }
+.log-entry.error { color: #e57373; }
+
+#inventory-display { margin-top: 10px; font-size: 0.8rem; color: #bcaaa4; max-height: 60px; overflow-y: auto; }
+
+/* Modal Windows Controls */
+.hidden { display: none !important; }
+#shop-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; justify-content: center; align-items: center; z-index: 10; }
+#shop-modal { background: #4e3629; border: 6px solid #e1b382; padding: 20px; width: 460px; border-radius: 8px; color: #fdf6e2; }
+
+.modal-tabs { display: flex; gap: 5px; margin-bottom: 15px; }
+.modal-tabs button { flex: 1; background: #2c1d16; color: #bcaaa4; border: 2px solid #1a110d; padding: 8px; cursor: pointer; font-family: inherit; font-weight: bold; }
+.modal-tabs button.active { background: #e1b382; color: #2c1d16; border-color: #fff; }
+
+.shop-buttons button, .action-btn, .craft-item button, .travel-btn {
+    width: 100%; background: #2c1d16; color: #fff; border: 2px solid #1a110d; padding: 10px; margin: 6px 0; cursor: pointer; font-family: inherit; font-weight: bold; border-radius: 4px;
+}
+.shop-buttons button:hover, .action-btn:hover, .craft-item button:hover:not(:disabled), .travel-btn:hover { background: #3d291f; border-color: #e1b382; }
+
+#crafting-list { max-height: 160px; overflow-y: auto; margin-bottom: 15px; text-align: left; }
+.craft-item { background: #2c1d16; border: 1px solid #1a110d; padding: 8px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px; font-size: 0.8rem; }
+.craft-details { display: flex; flex-direction: column; }
+.craft-mats { font-size: 0.7rem; color: #bcaaa4; }
+.craft-item button { width: auto; padding: 4px 10px; margin: 0; }
+.craft-item button:disabled { background: #555; color: #888; cursor: not-allowed; border-color: #444; }
+
+#travel-menu { border-top: 2px dashed #e1b382; padding-top: 10px; margin-top: 10px; }
+#travel-menu h3 { margin: 0 0 8px 0; font-size: 0.85rem; color: #e1b382; text-align: center; }
+.travel-grid { display: grid; grid-template-columns: 1fr; gap: 4px; }
+.travel-btn { padding: 6px; margin: 0; font-size: 0.8rem; text-align: left; }
+
+.close-btn { width: 100%; background: #9e2a2b; color: #fff; border: none; padding: 10px; margin-top: 10px; cursor: pointer; font-family: inherit; font-weight: bold; border-radius: 4px; }
+
+/* 🌟 POPPING FLOATING MINERAL ANIMATION 🌟 */
+#floating-text-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+.floating-mineral {
+    position: absolute; font-weight: bold; font-size: 1.1rem; text-shadow: 2px 2px 0px #000;
+    color: #fff; animation: floatUpAndFade 1.2s forwards ease-out; pointer-events: none;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(3px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes floatUpAndFade {
+    0% { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+    20% { opacity: 1; transform: translate(-50%, -25px) scale(1.1); }
+    100% { opacity: 0; transform: translate(-50%, -65px) scale(0.9); }
 }
+@keyframes riverWobble { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(10deg); } }
