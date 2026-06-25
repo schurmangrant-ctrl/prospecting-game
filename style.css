@@ -1,24 +1,27 @@
-body {
-    background-color: #121212;
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0c0c0c;
     color: #e0e0e0;
     font-family: 'Courier New', Courier, monospace;
+    overflow: hidden; /* Stops browser scrolling bars */
+}
+
+/* Fullscreen Grid Split */
+#game-viewport {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100vw;
     height: 100vh;
-    margin: 0;
+    border: 5px solid;
 }
 
-#game-container {
-    width: 550px;
-    border: 3px solid;
-    padding: 20px;
-    background: #000;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
-    position: relative;
-}
-
-/* Biome Aesthetic Colors */
+/* Dynamic Borders per Area */
 .area-shady { border-color: #4CAF50; }
 .area-shady .accent { color: #00BCD4; }
 .area-crimson { border-color: #F44336; }
@@ -26,77 +29,109 @@ body {
 .area-glacial { border-color: #2196F3; }
 .area-glacial .accent { color: #FFFFFF; }
 
-header h2 {
-    margin-top: 0;
-    text-align: center;
-    letter-spacing: 2px;
-}
-
-#stats-bar {
+/* The Game Screen Area */
+#world-map {
+    flex: 1; /* Occupies all available left room */
     display: flex;
-    justify-content: space-between;
-    border-bottom: 2px dashed #444;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-    font-size: 0.95rem;
+    justify-content: center;
+    align-items: center;
+    background-color: #050505;
+    padding: 20px;
 }
 
+#map-grid-display {
+    font-size: 2.5rem; /* Huge map graphics */
+    line-height: 3.2rem;
+    letter-spacing: 12px;
+    white-space: nowrap;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    width: 320px;
+    background-color: #111;
+    border-left: 3px dashed #333;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+#game-header h2 { margin: 0; text-align: center; font-size: 1.2rem; }
+#game-header h3 { margin: 5px 0 15px 0; text-align: center; letter-spacing: 1px; color: #aaa; }
+
+#stats-panel {
+    background: #161616;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.stat-row { margin: 6px 0; font-size: 0.9rem; }
 .yellow { color: #FFD700; font-weight: bold; }
 
-#map-display {
-    font-size: 1.6rem;
-    line-height: 1.8rem;
-    text-align: center;
-    background-color: #080808;
-    padding: 15px;
-    letter-spacing: 6px;
-    border-radius: 4px;
-}
-
 #action-prompt {
-    margin-top: 15px;
-    padding: 8px;
+    padding: 10px;
     text-align: center;
     background: #222;
     font-weight: bold;
+    font-size: 0.85rem;
+    min-height: 38px;
+    margin-bottom: 15px;
 }
+
+/* The Live Scrolling Activity Log */
+#activity-log {
+    flex: 1;
+    background: #080808;
+    border: 1px solid #222;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-radius: 4px;
+}
+.log-entry { animation: fadeIn 0.2s ease-out; }
+.log-entry.system { color: #888; }
+.log-entry.dig { color: #FFEB3B; }
+.log-entry.find { color: #4CAF50; font-weight: bold; }
+.log-entry.fail { color: #777; }
+.log-entry.error { color: #F44336; }
 
 #inventory-display {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #aaa;
-    min-height: 20px;
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: #888;
+    max-height: 80px;
+    overflow-y: auto;
 }
 
-/* Shop Overlay Settings */
+/* Overlay Window Control */
 .hidden { display: none !important; }
 #shop-overlay {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10;
 }
 #shop-modal {
     background: #111;
-    border: 2px solid #9C27B0;
+    border: 3px solid #9C27B0;
     padding: 30px;
-    width: 80%;
+    width: 400px;
     text-align: center;
 }
 .shop-buttons button, #travel-menu button {
-    display: block;
-    width: 100%;
-    background: #222;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 10px;
-    margin: 8px 0;
-    cursor: pointer;
-    font-family: inherit;
+    display: block; width: 100%; background: #222; color: #fff;
+    border: 1px solid #444; padding: 12px; margin: 10px 0;
+    cursor: pointer; font-family: inherit; font-weight: bold;
 }
 .shop-buttons button:hover, #travel-menu button:hover {
-    background: #333;
-    border-color: #9C27B0;
+    background: #2b2b2b; border-color: #9C27B0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
 }
