@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Prospector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container" class="area-shady">
+        <header id="game-header">
+            <h2>PROSPECTING IN: <span id="current-area">SHADY CREEK</span></h2>
+        </header>
+
+        <div id="stats-bar">
+            <div>Cash: <span id="stat-cash" class="yellow">$0</span></div>
+            <div>Dirt Bag: <span id="stat-dirt">0/5</span></div>
+            <div>Shovel: <span id="stat-shovel" class="accent">Rusty Shovel</span></div>
+            <div>Pan: <span id="stat-pan" class="accent">Wooden Pan</span></div>
+        </div>
+
+        <div id="map-display"></div>
+
+        <div id="action-prompt">Walk to a feature on the map to interact.</div>
+
+        <div id="inventory-display">Minerals Held: None</div>
+
+        <div id="shop-overlay" class="hidden">
+            <div id="shop-modal">
+                <h2>GENERAL STORE & TRADING</h2>
+                <p>Balance: <span id="shop-cash" class="yellow">$0</span></p>
+                <div class="shop-buttons">
+                    <button onclick="game.sellMinerals()">1. Sell All Minerals</button>
+                    <button id="btn-upgrade-shovel" onclick="game.upgradeShovel()">2. Upgrade Shovel</button>
+                    <button id="btn-upgrade-pan" onclick="game.upgradePan()">3. Upgrade Pan</button>
+                    <button onclick="game.showTravelMenu()">4. Travel to a New District</button>
+                    <button onclick="game.closeShop()">5. Head Back Outside</button>
+                </div>
+                <div id="travel-menu" class="hidden">
+                    <h3>Select Destination:</h3>
+                    <button onclick="game.travelTo('Shady Creek')">Shady Creek (Tier 1)</button>
+                    <button onclick="game.travelTo('Crimson Canyons')">Crimson Canyons (Tier 2)</button>
+                    <button onclick="game.travelTo('Glacial Chasm')">Glacial Chasm (Tier 3)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
