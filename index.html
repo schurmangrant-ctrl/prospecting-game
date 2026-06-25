@@ -3,55 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Prospector</title>
+    <title>Valley Prospector</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="game-viewport" class="area-shady">
         
         <div id="world-map">
-            <div id="map-grid-display"></div>
+            <div id="map-relative-wrapper">
+                <div id="map-grid-display"></div>
+                <div id="floating-text-container"></div>
+            </div>
         </div>
 
         <aside id="sidebar">
             <header id="game-header">
-                <h2>PROSPECTING</h2>
+                <h2>VALLEY PROSPECTOR</h2>
                 <h3 id="current-area">SHADY CREEK</h3>
             </header>
 
+            <div id="customizer-panel">
+                <h4>Character Setup</h4>
+                <div class="custom-row">
+                    <label>Shirt Color:</label>
+                    <input type="color" id="color-shirt" value="#ff5722" onchange="game.updateOutfit()">
+                </div>
+                <div class="custom-row">
+                    <label>Hat style:</label>
+                    <select id="select-hat" onchange="game.updateOutfit()">
+                        <option value="">None</option>
+                        <option value="🤠">Cowboy Hat</option>
+                        <option value="🧢">Cap</option>
+                        <option value="👑">Crown</option>
+                        <option value="🧑‍🌾">Farmer Hat</option>
+                    </select>
+                </div>
+            </div>
+
             <div id="stats-panel">
-                <div class="stat-row">Cash: <span id="stat-cash" class="yellow">$0</span></div>
-                <div class="stat-row">Dirt Bag: <span id="stat-dirt">0/5</span></div>
+                <div class="stat-row">Wallet: <span id="stat-cash" class="yellow">$0</span></div>
+                <div class="stat-row">Material Cargo: <span id="stat-dirt">0/5</span></div>
                 <div class="stat-row">Shovel: <span id="stat-shovel" class="accent">Rusty Shovel</span></div>
                 <div class="stat-row">Pan: <span id="stat-pan" class="accent">Wooden Pan</span></div>
             </div>
 
-            <div id="action-prompt">Use W/A/S/D to explore.</div>
+            <div id="action-prompt">Press [E] or Click adjacent tiles to interact.</div>
 
             <div id="activity-log">
-                <div class="log-entry system">Welcome to the wilderness.</div>
+                <div class="log-entry system">Welcome to the valley meadows.</div>
             </div>
 
-            <div id="inventory-display">Minerals: None</div>
+            <div id="inventory-display">Inventory: Empty</div>
         </aside>
 
         <div id="shop-overlay" class="hidden">
             <div id="shop-modal">
-                <h2>GENERAL STORE & TRADING</h2>
-                <p>Balance: <span id="shop-cash" class="yellow">$0</span></p>
-                <div class="shop-buttons">
-                    <button onclick="game.sellMinerals()">1. Sell All Minerals</button>
-                    <button id="btn-upgrade-shovel" onclick="game.upgradeShovel()">2. Upgrade Shovel</button>
-                    <button id="btn-upgrade-pan" onclick="game.upgradePan()">3. Upgrade Pan</button>
-                    <button onclick="game.showTravelMenu()">4. Travel to a New District</button>
-                    <button onclick="game.closeShop()">5. Head Back Outside</button>
+                <div class="modal-tabs">
+                    <button id="tab-btn-shop" class="active" onclick="game.switchTab('shop')">Buy/Sell</button>
+                    <button id="tab-btn-craft" onclick="game.switchTab('craft')">Crafting Recipes</button>
                 </div>
-                <div id="travel-menu" class="hidden">
-                    <h3>Select Destination:</h3>
-                    <button onclick="game.travelTo('Shady Creek')">Shady Creek (Tier 1)</button>
-                    <button onclick="game.travelTo('Crimson Canyons')">Crimson Canyons (Tier 2)</button>
-                    <button onclick="game.travelTo('Glacial Chasm')">Glacial Chasm (Tier 3)</button>
+                
+                <div id="tab-content-shop" class="tab-pane">
+                    <h2>Pelican Trading Post</h2>
+                    <p>Your Funds: <span id="shop-cash" class="yellow">$0</span></p>
+                    <div class="shop-buttons">
+                        <button class="action-btn" onclick="game.sellMinerals()">Sell All Collected Minerals</button>
+                        <button id="btn-upgrade-shovel" class="action-btn" onclick="game.upgradeShovel()">Upgrade Shovel</button>
+                        <button id="btn-upgrade-pan" class="action-btn" onclick="game.upgradePan()">Upgrade Pan</button>
+                    </div>
                 </div>
+
+                <div id="tab-content-craft" class="tab-pane hidden">
+                    <h2>Crafting Bench</h2>
+                    <div id="crafting-list">
+                        </div>
+                </div>
+
+                <div id="travel-menu">
+                    <h3>Map Landmarks (Click to Travel)</h3>
+                    <div class="travel-grid">
+                        <button class="travel-btn" onclick="game.travelTo('Shady Creek')">🟢 Shady Creek (Tier 1)</button>
+                        <button class="travel-btn" onclick="game.travelTo('Crimson Canyons')">🔴 Crimson Canyons (Tier 2)</button>
+                        <button class="travel-btn" onclick="game.travelTo('Glacial Chasm')">🔵 Glacial Chasm (Tier 3)</button>
+                    </div>
+                </div>
+
+                <button class="close-btn" onclick="game.closeShop()">Return Outside [E]</button>
             </div>
         </div>
     </div>
