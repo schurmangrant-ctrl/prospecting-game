@@ -7,23 +7,33 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container" class="area-shady">
-        <header id="game-header">
-            <h2>PROSPECTING IN: <span id="current-area">SHADY CREEK</span></h2>
-        </header>
-
-        <div id="stats-bar">
-            <div>Cash: <span id="stat-cash" class="yellow">$0</span></div>
-            <div>Dirt Bag: <span id="stat-dirt">0/5</span></div>
-            <div>Shovel: <span id="stat-shovel" class="accent">Rusty Shovel</span></div>
-            <div>Pan: <span id="stat-pan" class="accent">Wooden Pan</span></div>
+    <div id="game-viewport" class="area-shady">
+        
+        <div id="world-map">
+            <div id="map-grid-display"></div>
         </div>
 
-        <div id="map-display"></div>
+        <aside id="sidebar">
+            <header id="game-header">
+                <h2>PROSPECTING</h2>
+                <h3 id="current-area">SHADY CREEK</h3>
+            </header>
 
-        <div id="action-prompt">Walk to a feature on the map to interact.</div>
+            <div id="stats-panel">
+                <div class="stat-row">Cash: <span id="stat-cash" class="yellow">$0</span></div>
+                <div class="stat-row">Dirt Bag: <span id="stat-dirt">0/5</span></div>
+                <div class="stat-row">Shovel: <span id="stat-shovel" class="accent">Rusty Shovel</span></div>
+                <div class="stat-row">Pan: <span id="stat-pan" class="accent">Wooden Pan</span></div>
+            </div>
 
-        <div id="inventory-display">Minerals Held: None</div>
+            <div id="action-prompt">Use W/A/S/D to explore.</div>
+
+            <div id="activity-log">
+                <div class="log-entry system">Welcome to the wilderness.</div>
+            </div>
+
+            <div id="inventory-display">Minerals: None</div>
+        </aside>
 
         <div id="shop-overlay" class="hidden">
             <div id="shop-modal">
